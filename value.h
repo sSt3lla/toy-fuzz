@@ -116,7 +116,7 @@ value_t v_in(value_t key, value_t dict);
 void v_set(value_t dict, value_t key, value_t v);
 value_t v_get(value_t dict, value_t key);
 
-value_t v_list_push(value_t list, value_t new);
+value_t v_list_push(value_t list, value_t new_v);
 size_t v_list_length(value_t list);
 
 #endif /* VALUE_H */

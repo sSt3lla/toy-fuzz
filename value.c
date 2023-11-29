@@ -173,10 +173,10 @@ size_t v_list_length(value_t list) {
     return v_to_integer(dict_get(&list.object->dict, "length"));
 }
 
-value_t v_list_push(value_t list, value_t new) {
+value_t v_list_push(value_t list, value_t new_v) {
     v_assert_type(list, list);
     size_t index = v_list_length(list);
-    dict_setv(&list.object->dict, v_number(index), new);
+    dict_setv(&list.object->dict, v_number(index), new_v);
     dict_set(&list.object->dict, "length", v_number(index + 1));
     return v_null;
 }
