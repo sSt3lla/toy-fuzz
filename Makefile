@@ -1,23 +1,23 @@
 
-CC=cc
+CXX=clang++
+CC=clang
 CFLAGS=-W -Wall -Wextra
 OBJECTS=bvalue.o compile.o compiler_code.o dict.o collect_garbage.o main.o \
 	object.o util.o value.o vm.o
 
-all: release
+all: fuzz
 
-release: CFLAGS+=-Os
-release: LDFLAGS+=-s
-release: toy
+fuzz: CFLAGS+=-O1 -g -fsanitize=fuzzer,address
+fuzz: libfuzz
 
-debug: CFLAGS+=-g
-debug: toy
+libfuzz: $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $^
 
-toy: $(OBJECTS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+main.o: main.cpp
+	$(CXX) $(CFLAGS) -c -o $@ $<
 
 compiler_code.c: *.js
 	node translate_to_c.node.js > $@
 
 clean:
-	rm -rf $(OBJECTS) compiler_code.c toy
+	rm -rf $(OBJECTS) compiler_code.c libfuzz
